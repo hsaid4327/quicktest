@@ -1,0 +1,38 @@
+pipeline {
+  agent any
+
+  stages {
+   
+   stage('Tag Image from source project') {
+      steps {
+        echo "************ Tagging the image from source project ************"
+        script {
+          openshift.withCluster() {
+            openshift.withProject(env.DEST_PROJECT) {
+               sh "oc set triggers dc/$APP_NAME --manual -n $DEST_PROJECT"
+               openshift.tag("$SOURCE_PROJECT/$IMAGE_NAME:$SOURCE_IMAGE_TAG", "$DEST_PROJECT/$IMAGE_NAME:$DEST_IMAGE_TAG")
+            }
+          }
+        }
+      }
+    }
+
+
+    stage('Deploy to env.DEST_PROJECT') {
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.withProject(env.DEST_PROJECT) {
+              openshift.selector("dc", env.APP_NAME).rollout().latest();
+            }
+          }
+        }
+      }
+    }
+
+   }
+ }
+
+
+
+
