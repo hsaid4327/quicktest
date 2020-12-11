@@ -54,20 +54,6 @@ objects:
 
 # Pipeline
 
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: edit-${CICD_PROJECT}
-    namespace: ${DEST_PROJECT}
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: ClusterRole
-    name: edit
-  subjects:
-  - apiGroup: rbac.authorization.k8s.io
-    kind: Group
-    name: system:serviceaccounts:${CICD_PROJECT}
-
 
 
 - apiVersion: v1
@@ -113,5 +99,6 @@ objects:
           value: ${SOURCE_IMAGE_TAG}
         - name: DEST_IMAGE_TAG
           value: ${DEST_IMAGE_TAG}
-        jenkinsfilePath: cicd/Jenkinsfile
+        jenkinsfilePath: cicd
+        jenkinsfile: Jenkinsfile-cd
       type: JenkinsPipeline
