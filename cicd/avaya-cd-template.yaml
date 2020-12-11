@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 labels:
-  app: ${APP_NAME}-cd
+  app: ${DEST_APP_NAME}-cd
   
 metadata:
   annotations:
@@ -20,8 +20,11 @@ parameters:
   name: CICD_PROJECT
   required: true
   value: avaya-cicd
-- displayName: Applicaton name
-  name: APP_NAME
+- displayName: Source Applicaton name
+  name: SOURCE_APP_NAME
+  required: true
+- displayName: Destination Applicaton name
+  name: DEST_APP_NAME
   required: true
 - displayName: Repository url
   name: REPO_URL
@@ -54,8 +57,8 @@ objects:
 - apiVersion: rbac.authorization.k8s.io/v1
   kind: RoleBinding
   metadata:
-    name: edit-${DEST_PROJECT}
-    namespace: ${CICD_PROJECT}
+    name: edit-${CICD_PROJECT}
+    namespace: ${DEST_PROJECT}
   roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: ClusterRole
@@ -63,7 +66,7 @@ objects:
   subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: Group
-    name: system:serviceaccounts:${DEST_PROJECT}
+    name: system:serviceaccounts:${CICD_PROJECT}
 
 
 
@@ -73,9 +76,9 @@ objects:
     annotations:
       pipeline.alpha.openshift.io/uses: '[{"name": "jenkins", "namespace": "", "kind": "DeploymentConfig"}]'
     labels:
-      app: ${APP_NAME}-deployment-pipeline
-      name: ${APP_NAME}-deployment-pipeline
-    name: ${APP_NAME}-deployment-pipeline
+      app: ${DEST_APP_NAME}-deployment-pipeline
+      name: ${DEST_APP_NAME}-deployment-pipeline
+    name: ${DEST_APP_NAME}-deployment-pipeline
     namespace: ${CICD_PROJECT}
   spec:
     triggers:
@@ -97,11 +100,13 @@ objects:
       jenkinsPipelineStrategy:
         env:
         - name: SOURCE_PROJECT
-          value: ${DEV_PROJECT}
+          value: ${SOURCE_PROJECT}
         - name: DEST_PROJECT
-          value: ${STAGE_PROJECT}
-        - name: APP_NAME
-          value: ${APP_NAME}
+          value: ${DEST_PROJECT}
+        - name: SOURCE_APP_NAME
+          value: ${SOURCE_APP_NAME}
+        - name: DEST_APP_NAME
+          value: ${DEST_APP_NAME}
         - name: IMAGE_NAME
           value: ${IMAGE_NAME}
         - name: SOURCE_IMAGE_TAG

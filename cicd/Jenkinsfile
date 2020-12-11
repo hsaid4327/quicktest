@@ -9,7 +9,7 @@ pipeline {
         script {
           openshift.withCluster() {
             openshift.withProject(env.DEST_PROJECT) {
-               sh "oc set triggers dc/$APP_NAME --manual -n $DEST_PROJECT"
+               sh "oc set triggers dc/$DEST_APP_NAME --manual -n $DEST_PROJECT"
                openshift.tag("$SOURCE_PROJECT/$IMAGE_NAME:$SOURCE_IMAGE_TAG", "$DEST_PROJECT/$IMAGE_NAME:$DEST_IMAGE_TAG")
             }
           }
@@ -23,7 +23,7 @@ pipeline {
         script {
           openshift.withCluster() {
             openshift.withProject(env.DEST_PROJECT) {
-              openshift.selector("dc", env.APP_NAME).rollout().latest();
+              openshift.selector("dc", env.DEST_APP_NAME).rollout().latest();
             }
           }
         }
