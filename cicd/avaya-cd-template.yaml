@@ -99,6 +99,6 @@ objects:
           value: ${SOURCE_IMAGE_TAG}
         - name: DEST_IMAGE_TAG
           value: ${DEST_IMAGE_TAG}
-        jenkinsfilePath: cicd
-        jenkinsfile: Jenkinsfile-cd
+        jenkinsfilePath: cicd/Jenkinsfile-cd
+       
       type: JenkinsPipeline
