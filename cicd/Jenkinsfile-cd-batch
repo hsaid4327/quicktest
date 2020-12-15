@@ -12,7 +12,9 @@ pipeline {
               
                sh label: '', script: '''for i in $(oc get bc -l avaya-pipeline=$PIPELINE_LABEL -o=jsonpath=\'{.items[*].metadata.name}\' -n avaya-cicd) 
                 do 
-                  echo **************** Deployment Job:$i  starting *******************************; 
+                  echo "**************************************************"
+                  echo " Running Job: $i"
+                  echo "**************************************************"
                   oc start-build $i -n avaya-cicd --wait
                 done'''
             }
