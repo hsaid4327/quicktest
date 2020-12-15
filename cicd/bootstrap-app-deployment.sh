@@ -152,6 +152,7 @@ function setup_projects() {
 
    oc adm policy add-role-to-group edit system:serviceaccounts:$PROJECT_NAME -n $AVAYA_COMMON
    oc adm policy add-role-to-group edit system:serviceaccounts:$PROJECT_NAME -n $PROJECT_STAGE
+   oc adm policy add-role-to-group edit system:serviceaccounts:avaya-cicd -n $PROJECT_NAME
 
 
 

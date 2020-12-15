@@ -1,0 +1,28 @@
+pipeline {
+  agent any
+
+  stages {
+   
+   stage('Executing Pipeline') {
+      steps {
+       
+        script {
+          openshift.withCluster() {
+            openshift.withProject(env.avaya-cicd) {
+               sh label: '', script: '''for i in $(oc get bc -l avaya-pipeline=batch-deployment -o=jsonpath=\'{.metadata.name}\'); 
+                do 
+                  echo Deployment Job:$i  starting; 
+                  oc start-build $i --wait
+                done'''
+            }
+          }
+        }
+      }
+    }
+
+   }
+ }
+
+
+
+

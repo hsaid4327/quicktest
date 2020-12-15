@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Template
 labels:
   app: ${DEST_APP_NAME}-cd
+  avaya-pipeline: batch-deployment
   
 metadata:
   annotations:
@@ -99,6 +100,6 @@ objects:
           value: ${SOURCE_IMAGE_TAG}
         - name: DEST_IMAGE_TAG
           value: ${DEST_IMAGE_TAG}
-        jenkinsfilePath: cicd/Jenkinsfile-cd
+        jenkinsfilePath: cicd/Jenkinsfile-cd	
        
       type: JenkinsPipeline

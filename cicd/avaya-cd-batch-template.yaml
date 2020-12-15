@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Template
+labels:
+  app: avaya-cd-batch
+  
+  
+metadata:
+  annotations:
+    iconClass: icon-jenkins
+    tags: instant-app,jenkins,gogs,nexus,cicd
+  name: avaya-cd-batch
+message: "Use the following credentials for login:\nJenkins: use your OpenShift credentials"
+parameters:
+
+- displayName: Repository url
+  name: REPO_URL
+  required: true
+- displayName: Repository reference
+  name: REPO_REF
+  value: main 
+- description: Webhook secret
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: WEBHOOK_SECRET
+  required: true
+- displayName: Image name
+  name: PIPELINE_LABEL
+  required: true
+
+
+
+
+objects:
+
+# Pipeline
+
+
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "jenkins", "namespace": "", "kind": "DeploymentConfig"}]'
+    labels:
+      app: avaya-cd-batch
+     
+    name: avaya-cd-batch
+    namespace: ${CICD_PROJECT}
+  spec:
+    triggers:
+      - type: GitHub
+        github:
+          secret: ${WEBHOOK_SECRET}
+      - type: Generic
+        generic:
+          secret: ${WEBHOOK_SECRET}
+    runPolicy: Serial
+    source:
+      type: "Git"
+      git:
+        uri: ${REPO_URL}
+        ref: ${REPO_REF}
+      sourceSecret:
+        name: git-secret
+    strategy:
+      jenkinsPipelineStrategy:
+        env:
+ 
+        - name: PIPELINE_LABEL
+          value: ${PIPELINE_LABEL}
+ 
+        jenkinsfilePath: cicd/Jenkinsfile-cd-batch	
+       
+      type: JenkinsPipeline
