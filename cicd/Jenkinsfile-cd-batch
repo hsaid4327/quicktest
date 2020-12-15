@@ -8,8 +8,8 @@ pipeline {
        
         script {
           openshift.withCluster() {
-            openshift.withProject(env.avaya-cicd) {
-               sh label: '', script: '''for i in $(oc get bc -l avaya-pipeline=batch-deployment -o=jsonpath=\'{.metadata.name}\'); 
+            openshift.withProject('avaya-cicd') {
+               sh label: '', script: '''for i in $(oc get bc -l avaya-pipeline=env.PIPELINE_LABEL -o=jsonpath=\'{.metadata.name}\'); 
                 do 
                   echo Deployment Job:$i  starting; 
                   oc start-build $i --wait
