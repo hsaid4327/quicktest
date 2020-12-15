@@ -10,7 +10,7 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject('avaya-cicd') {
               
-               sh label: '', script: '''for i in $(oc get bc -l avaya-pipeline=$PIPELINE_LABEL -o=jsonpath=\'{.metadata.name}\' -n avaya-cicd) 
+               sh label: '', script: '''for i in $(oc get bc -l avaya-pipeline=$PIPELINE_LABEL -o=jsonpath=\'{.items[*].metadata.name}\' -n avaya-cicd) 
                 do 
                   echo **************** Deployment Job:$i  starting *******************************; 
                   oc start-build $i -n avaya-cicd --wait
