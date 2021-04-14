@@ -4,5 +4,6 @@ MAINTAINER John Doe <jdoe@xyz.com>
 RUN yum install -y nc 
 EXPOSE 9477 
 COPY ./test.sh ./post-hook.sh /
+RUN chmod 777 ./post-hook.sh
 USER 1001 
 ENTRYPOINT ["/test.sh"]
