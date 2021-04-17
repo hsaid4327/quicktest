@@ -14,7 +14,7 @@ RUN chmod 777 ./post-hook.sh && \
 
 COPY ./scripts/* /scripts
 COPY ./archive/Utilities_2021Q100 /archive
-RUN chown -R 1001:1001 /scripts
+RUN chown -R 1001:1001 /scripts && \
     chown -R 1001:1001 /archive
 USER 1001
 ENTRYPOINT ["/test.sh"]
