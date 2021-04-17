@@ -1,6 +1,6 @@
 #!bin/bash
 
-source ./functions.sh
+source ./scripts/functions.sh
 arg1=$1
 arg2=$2
 fn1 $arg1
