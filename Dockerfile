@@ -15,5 +15,5 @@ RUN chown -R 1001:1001 /scripts && \
     chown -R 1001:1001 /archive && \
     chmod ugo+x /scripts/*.sh
 USER 1001
-RUN /scripts/setup.sh "key1" "key2"
+RUN ./scripts/setup.sh "key1" "key2"
 ENTRYPOINT ["/test.sh"]
