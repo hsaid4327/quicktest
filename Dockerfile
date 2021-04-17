@@ -2,9 +2,6 @@ FROM registry.redhat.io/ubi7/ubi:7.7
 LABEL description="This is a custom httpd container image"
 MAINTAINER John Doe <jdoe@xyz.com>
 RUN yum install -y nc
-RUN echo "******************* first echo command ***********************" && \
-    sleep 30 && \
-    echo "******************* waking up from sleep ***************************"
 EXPOSE 9477
 COPY ./test.sh ./post-hook.sh /
 RUN chmod 777 ./post-hook.sh && \
@@ -15,6 +12,8 @@ RUN chmod 777 ./post-hook.sh && \
 COPY ./scripts/* /scripts
 COPY ./archive/Utilities_2021Q100 /archive/Utilities_2021Q100
 RUN chown -R 1001:1001 /scripts && \
-    chown -R 1001:1001 /archive
+    chown -R 1001:1001 /archive && \
+    chmod ugo+x /scripts/*.sh
 USER 1001
+RUN setup.sh "key1" "key2"
 ENTRYPOINT ["/test.sh"]
