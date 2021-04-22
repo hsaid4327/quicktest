@@ -1,4 +1,4 @@
-FROM quicktest-1.0:latest
+FROM quicktest-1:latest
 LABEL description="This is a custom httpd container image"
 MAINTAINER John Doe <jdoe@xyz.com>
 
