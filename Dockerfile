@@ -5,10 +5,11 @@ ARG myVar=myvariable
 ENV var1=var1value
 RUN yum install -y nc
 EXPOSE 9477
-COPY ./test.sh ./post-hook.sh /
+COPY ./test.sh ./post-hook.sh test.out /
 RUN chmod 777 ./post-hook.sh && \
     mkdir -p /scripts && \
-    mkdir -p /archive
+    mkdir -p /archive && \
+    chmod 777 test.out
 
 
 COPY ./scripts/* /scripts
