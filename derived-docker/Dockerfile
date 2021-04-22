@@ -6,4 +6,4 @@ RUN chown -R 1001:1001 /scripts && \
     chown -R 1001:1001 /archive && \
     chmod ugo+x /scripts/*.sh && \
     touch test.out && \
-    echo "This is the arg: $arg >test.out
+    echo "This is the arg: ${myVar} >test.out
