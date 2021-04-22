@@ -1,6 +1,8 @@
 FROM registry.redhat.io/ubi7/ubi:7.7
 LABEL description="This is a custom httpd container image"
 MAINTAINER John Doe <jdoe@xyz.com>
+ARG myVar=myvariable
+ENV var1=var1value
 RUN yum install -y nc
 EXPOSE 9477
 COPY ./test.sh ./post-hook.sh /
