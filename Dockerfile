@@ -3,6 +3,7 @@ LABEL description="This is a custom httpd container image"
 MAINTAINER John Doe <jdoe@xyz.com>
 ARG myVar=myvariable
 ENV var1=var1value
+ENV tdv_base_dir=${app-dev.properties.TDV_BASE_DIR}
 RUN yum install -y nc
 EXPOSE 9477
 COPY ./test.sh ./post-hook.sh test.out /
@@ -18,5 +19,5 @@ RUN chown -R 1001:1001 /scripts && \
     chown -R 1001:1001 /archive && \
     chmod ugo+x /scripts/*.sh
 USER 1001
-RUN ./scripts/setup.sh "key1" "key2"
+RUN ./scripts/setup.sh ${tdv_base_dir} "key2"
 ENTRYPOINT ["/test.sh"]
