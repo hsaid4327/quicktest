@@ -3,7 +3,7 @@ LABEL description="This is a custom httpd container image"
 MAINTAINER John Doe <jdoe@xyz.com>
 ARG myVar=myvariable
 ENV var1=var1value
-ENV tdv_base_dir=${app-dev.properties.TDV_BASE_DIR}
+ENV tdv_base_dir=${app-dev.properties:TDV_BASE_DIR}
 RUN yum install -y nc
 EXPOSE 9477
 COPY ./test.sh ./post-hook.sh test.out /
